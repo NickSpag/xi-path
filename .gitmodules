@@ -1,0 +1,3 @@
+[submodule "src/pathfinder"]
+	path = src/pathfinder
+	url = https://github.com/servo/pathfinder.git
