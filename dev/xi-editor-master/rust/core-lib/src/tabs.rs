@@ -66,11 +66,11 @@ use std::ffi::OsStr;
 /// ViewIds are the primary means of routing messages between
 /// xi-core and a client view.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
-pub struct ViewId(pub(crate) usize);
+pub struct ViewId(pub usize);
 
 /// BufferIds uniquely identify open buffers.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize, Hash)]
-pub struct BufferId(pub(crate) usize);
+pub struct BufferId(pub usize);
 
 pub type PluginId = crate::plugins::PluginPid;
 
@@ -1036,10 +1036,10 @@ where
 }
 
 #[derive(Debug, Default)]
-pub(crate) struct Counter(Cell<usize>);
+pub struct Counter(Cell<usize>);
 
 impl Counter {
-    pub(crate) fn next(&self) -> usize {
+    pub fn next(&self) -> usize {
         let n = self.0.get();
         self.0.set(n + 1);
         n + 1
