@@ -60,7 +60,10 @@ fn main() {
     let mut canvas = canvas.get_context_2d(CanvasFontContext::from_system_source());
 
     // arrange xi-editor backend
-    arrange_xi_editor();
+    let mut backend_session = Session::new();
+
+    // create a new view
+    let view_id = create_view(&mut backend_session);
 
     // draw our editor on the canvas
     draw(&mut canvas, &window_size);
@@ -77,6 +80,8 @@ fn main() {
     loop {
         match event_pump.wait_event() {
             Event::Quit {..} | Event::KeyDown { keycode: Some(Keycode::Escape), .. } => return,
+            //todo insert
+            Event::KeyDown { keycode: Some(key), .. } => backend_session.insert(&view_id, key),
             _ => {}
         }
     }
@@ -84,10 +89,10 @@ fn main() {
 
 fn draw(canvas : &mut CanvasRenderingContext2D, window_size: &Vector2I) {
     let gutter_size = draw_line_gutter(canvas, &window_size);
-    draw_one_sample_line(canvas, &gutter_size);
+    draw_sample_lines(canvas, &gutter_size);
 }
 
-fn draw_one_sample_line(canvas: &mut CanvasRenderingContext2D, gutter_size: &Vector2F) {
+fn draw_sample_lines(canvas: &mut CanvasRenderingContext2D, gutter_size: &Vector2F) {
     set_line_text_style(canvas);
     let padding = 4_f32;
     let line_margin = gutter_size.x() + padding;
@@ -99,7 +104,7 @@ fn draw_one_sample_line(canvas: &mut CanvasRenderingContext2D, gutter_size: &Vec
 
     for line in 11..21 {
         let line_bottom = gutter_size.y() * (line as f32); 
-        canvas.fill_text("System.Console.WriteLine(\"Hello World!\");", vec2f(gutter_size.x(), line_bottom));
+        canvas.fill_text("System.Console.WriteLine(\"Hello World!\");", vec2f(line_margin, line_bottom));
     }
 }
 
@@ -173,9 +178,12 @@ fn print_text_metrics(canvas: &mut CanvasRenderingContext2D, text: &str) {
     println!(" width: {}", metrics.width());
 }
 
-fn arrange_xi_editor() -> ViewId {
-    let mut session = Session::new();
+fn insert(session: &mut Session, view_id: &ViewId) {
 
+}
+
+//todo optional path
+fn create_view(session: &mut Session) -> ViewId {
     return match session.add_new_view(None) {
         Ok(vid) => vid,
         Err(e) => {
