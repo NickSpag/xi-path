@@ -184,11 +184,11 @@ impl View {
         }
     }
 
-    pub(crate) fn get_buffer_id(&self) -> BufferId {
+    pub fn get_buffer_id(&self) -> BufferId {
         self.buffer_id
     }
 
-    pub(crate) fn get_view_id(&self) -> ViewId {
+    pub fn get_view_id(&self) -> ViewId {
         self.view_id
     }
 
