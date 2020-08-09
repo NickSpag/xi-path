@@ -59,3 +59,6 @@ path = "./dev/xi-editor-master/rust/rope"
 path = "./dev/xi-editor-master/rust/core-lib"
 default-features = false
 features = []
+
+[dependencies.frontend]
+path = "frontend"
