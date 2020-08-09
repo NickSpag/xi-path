@@ -389,7 +389,7 @@ impl ConfigManager {
     ///
     /// Panics if `id` does not exist. The caller is responsible for ensuring
     /// that the `ConfigManager` is kept up to date as buffers are added/removed.
-    pub(crate) fn get_buffer_config(&self, id: BufferId) -> &BufferConfig {
+    pub fn get_buffer_config(&self, id: BufferId) -> &BufferConfig {
         self.buffer_configs.get(&id).unwrap()
     }
 
@@ -398,7 +398,7 @@ impl ConfigManager {
     /// # Panics:
     ///
     /// Panics if `id` does not exist.
-    pub(crate) fn get_buffer_language(&self, id: BufferId) -> LanguageId {
+    pub fn get_buffer_language(&self, id: BufferId) -> LanguageId {
         self.buffer_tags.get(&id).map(LanguageTag::resolve).unwrap()
     }
 
