@@ -8,12 +8,22 @@ use std::path::{Path, PathBuf};
 
 use sdl2::keyboard::Keycode;
 
+use xi_core_lib::{ 
+    ViewId, 
+    BufferId,
+    view::View, 
+    editor::Editor,
+    tabs::Counter,
+    file:: {FileManager, FileError },
+    event_context::EventContext, 
+    config::ConfigManager, 
+    styles::ThemeStyleMap, 
+    width_cache::WidthCache 
+};
+
 use xi_rope::Rope;
-use xi_core_lib::editor::Editor;
-use xi_core_lib::view::View;
-use xi_core_lib::tabs::Counter;
-use xi_core_lib::file::{FileManager, FileError};
-use xi_core_lib::{ ViewId, BufferId };
+
+
 
 pub struct Session {
     editors: BTreeMap<BufferId, RefCell<Editor>>,
