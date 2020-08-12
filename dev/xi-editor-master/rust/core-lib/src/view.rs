@@ -772,7 +772,7 @@ impl View {
         // send updated find status only if there have been changes
         if self.find_changed != FindStatusChange::None {
             let matches_only = self.find_changed == FindStatusChange::Matches;
-            client.find_status(self.view_id, self.find_status(text, matches_only));
+            client.find_status(self.view_id, &self.find_status(text, matches_only));
             self.find_changed = FindStatusChange::None;
         }
 
