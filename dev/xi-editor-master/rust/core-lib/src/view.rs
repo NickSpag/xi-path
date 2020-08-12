@@ -728,7 +728,11 @@ impl View {
         }
         let ix = style_map.add(style);
         let style = style_map.merge_with_default(style);
-        client.def_style(&style.to_json(ix));
+        // we're taking away the id here, probably problematic -nick
+        // - maybe the id is the id of the json message? should be the id of an individualstyle but 
+        // i dont undestand the stylemap thing enough
+        //     original: client.def_style(&style.to_json(ix));
+        client.def_style(&style);
         ix
     }
 
@@ -768,14 +772,14 @@ impl View {
         // send updated find status only if there have been changes
         if self.find_changed != FindStatusChange::None {
             let matches_only = self.find_changed == FindStatusChange::Matches;
-            client.find_status(self.view_id, &json!(self.find_status(text, matches_only)));
+            client.find_status(self.view_id, self.find_status(text, matches_only));
             self.find_changed = FindStatusChange::None;
         }
 
         // send updated replace status if changed
         if self.replace_changed {
             if let Some(replace) = self.get_replace() {
-                client.replace_status(self.view_id, &json!(replace))
+                client.replace_status(self.view_id, &replace)
             }
         }
 

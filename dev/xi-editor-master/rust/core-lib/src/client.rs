@@ -22,13 +22,10 @@ use xi_rpc::{self, RpcPeer, test_utils::DummyPeer};
 use crate::config::Table;
 use crate::plugins::rpc::ClientPluginInfo;
 use crate::plugins::Command;
-use crate::styles::ThemeSettings;
+use crate::styles::{Style, ThemeSettings};
 use crate::syntax::LanguageId;
 use crate::tabs::ViewId;
-use crate::width_cache::{WidthReq, WidthResponse};
-
-/// An interface to the frontend.
-//pub struct Client(RpcPeer);
+use crate::{find::FindStatus, width_cache::{WidthReq, WidthResponse}, view::Replace};
 
 pub trait Frontend: Send + 'static  {
     fn update_view(&self, view_id: ViewId, update: &Update);
@@ -47,9 +44,9 @@ pub trait Frontend: Send + 'static  {
     /// Notify the client of the available plugins.
     fn available_plugins(&self, view_id: ViewId, plugins: &[ClientPluginInfo]);
     fn update_cmds(&self, view_id: ViewId, plugin: &str, cmds: &[Command]);
-    fn def_style(&self, style: &Value) ;
-    fn find_status(&self, view_id: ViewId, queries: &Value);
-    fn replace_status(&self, view_id: ViewId, replace: &Value);
+    fn def_style(&self, style: &Style) ;
+    fn find_status(&self, view_id: ViewId, queries: &Vec<FindStatus>);
+    fn replace_status(&self, view_id: ViewId, replace: &Replace);
     /// Ask front-end to measure widths of strings.
     fn measure_width(&self, reqs: &[WidthReq]) -> Result<WidthResponse, xi_rpc::Error>;
     //fn alert<S: AsRef<str>>(&self, msg: S);
@@ -76,6 +73,10 @@ pub enum ClientType
     Direct(FrontendClient)
 }
 
+/// An interface to the frontend.
+///   originally- Client(RpcPeer). So I just created an enum of the type of client we want, one member with rpc, one with Frontend trait, 
+///   and calls to Client match the enum and continue on with Json if its the old RpcPeer, or direct calls to the Frontend trait if not
+///   probably a rust central way to do this. just pushing forward for sake of educational momentum
 pub struct Client(ClientType);
 
 impl Client {
@@ -210,14 +211,14 @@ impl Client {
         }    
     }
 
-    pub fn def_style(&self, style: &Value) {
+    pub fn def_style(&self, style: &Style) {
         match &self.0 {
-            ClientType::Rpc(r) => r.send_rpc_notification("def_style", &style),
+            ClientType::Rpc(r) => r.send_rpc_notification("def_style", &json!(style)),
             ClientType::Direct(fe) => fe.def_style(style),
         };
     }
 
-    pub fn find_status(&self, view_id: ViewId, queries: &Value) {
+    pub fn find_status(&self, view_id: ViewId, queries: &Vec<FindStatus>) {
         match &self.0 {
             ClientType::Rpc(r) => r.send_rpc_notification(
                 "find_status",
@@ -225,11 +226,11 @@ impl Client {
                     "view_id": view_id,
                     "queries": queries,
                 })),
-            ClientType::Direct(fe) => fe.find_status(view_id, queries),
+            ClientType::Direct(fe) => fe.find_status(view_id, &queries),
         };
     }
 
-    pub fn replace_status(&self, view_id: ViewId, replace: &Value) {
+    pub fn replace_status(&self, view_id: ViewId, replace: &Replace) {
         match &self.0 {
             ClientType::Rpc(r) => r.send_rpc_notification(
                 "replace_status",
@@ -237,7 +238,7 @@ impl Client {
                     "view_id": view_id,
                     "status": replace,
                 })),
-            ClientType::Direct(fe) => fe.replace_status(view_id, replace),
+            ClientType::Direct(fe) => fe.replace_status(view_id, &replace),
         };
     }
 

@@ -586,7 +586,7 @@ impl<'a> EventContext<'a> {
             let ed = self.editor.borrow();
             self.client.find_status(
                 self.view_id,
-                &json!(self.view.borrow().find_status(ed.get_buffer(), true)),
+                &self.view.borrow().find_status(ed.get_buffer(), true),
             );
             self.schedule_find();
         }
