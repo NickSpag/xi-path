@@ -1,5 +1,13 @@
-use xi_core_lib::{styles::Style, client::Frontend, find::FindStatus, view::Replace};
-
+use xi_core_lib:: {
+    ViewId, ConfigTable,LanguageId,
+    styles:: { Style, ThemeSettings }, 
+    client:: { Frontend, Update }, 
+    find::FindStatus, 
+    view::Replace,
+    plugin_manifest::Command,
+    plugin_rpc::ClientPluginInfo,
+    width_cache:: { WidthReq, WidthResponse }
+};
 
 pub struct PathfinderFrontend{
 }
@@ -12,46 +20,46 @@ impl PathfinderFrontend {
 
 impl Frontend for PathfinderFrontend{
 
-    fn update_view(&self, view_id: xi_core_lib::ViewId, update: &xi_core_lib::client::Update) {
+    fn update_view(&self, view_id: ViewId, update: &Update) {
         todo!()
     }
-    fn scroll_to(&self, view_id: xi_core_lib::ViewId, line: usize, col: usize) {
+    fn scroll_to(&self, view_id: ViewId, line: usize, col: usize) {
         todo!()
     }
-    fn config_changed(&self, view_id: xi_core_lib::ViewId, changes: &xi_core_lib::ConfigTable) {
+    fn config_changed(&self, view_id: ViewId, changes: &ConfigTable) {
         todo!()
     }
     fn available_themes(&self, theme_names: Vec<String>) {
         todo!()
     }
-    fn available_languages(&self, languages: Vec<xi_core_lib::LanguageId>) {
+    fn available_languages(&self, languages: Vec<LanguageId>) {
         todo!()
     }
-    fn theme_changed(&self, name: &str, theme: &xi_core_lib::styles::ThemeSettings) {
+    fn theme_changed(&self, name: &str, theme: &ThemeSettings) {
         todo!()
     }
-    fn language_changed(&self, view_id: xi_core_lib::ViewId, new_lang: &xi_core_lib::LanguageId) {
+    fn language_changed(&self, view_id: ViewId, new_lang: &LanguageId) {
         todo!()
     }
-    fn plugin_started(&self, view_id: xi_core_lib::ViewId, plugin: &str) {
+    fn plugin_started(&self, view_id: ViewId, plugin: &str) {
         todo!()
     }
-    fn plugin_stopped(&self, view_id: xi_core_lib::ViewId, plugin: &str, code: i32) {
+    fn plugin_stopped(&self, view_id: ViewId, plugin: &str, code: i32) {
         todo!()
     }
-    fn available_plugins(&self, view_id: xi_core_lib::ViewId, plugins: &[xi_core_lib::plugin_rpc::ClientPluginInfo]) {
+    fn available_plugins(&self, view_id: ViewId, plugins: &[ClientPluginInfo]) {
         todo!()
     }
-    fn update_cmds(&self, view_id: xi_core_lib::ViewId, plugin: &str, cmds: &[xi_core_lib::plugin_manifest::Command]) {
+    fn update_cmds(&self, view_id: ViewId, plugin: &str, cmds: &[Command]) {
         todo!()
     }
     fn def_style(&self, style: &Style)  {
         todo!()
     }
-    fn find_status(&self, view_id: xi_core_lib::ViewId, queries: &Vec<FindStatus>) {
+    fn find_status(&self, view_id: ViewId, queries: &Vec<FindStatus>) {
         todo!()
     }
-    fn replace_status(&self, view_id: xi_core_lib::ViewId, replace: &Replace) {
+    fn replace_status(&self, view_id: ViewId, replace: &Replace) {
         todo!()
     }
     fn measure_width(&self, reqs: &[xi_core_lib::width_cache::WidthReq]) -> Result<xi_core_lib::width_cache::WidthResponse, xi_rpc::Error> {
@@ -59,7 +67,7 @@ impl Frontend for PathfinderFrontend{
     }
     fn add_status_item(
         &self,
-        view_id: xi_core_lib::ViewId,
+        view_id: ViewId,
         source: &str,
         key: &str,
         value: &str,
@@ -67,13 +75,13 @@ impl Frontend for PathfinderFrontend{
     ) {
         todo!()
     }
-    fn update_status_item(&self, view_id: xi_core_lib::ViewId, key: &str, value: &str) {
+    fn update_status_item(&self, view_id: ViewId, key: &str, value: &str) {
         todo!()
     }
-    fn remove_status_item(&self, view_id: xi_core_lib::ViewId, key: &str) {
+    fn remove_status_item(&self, view_id: ViewId, key: &str) {
         todo!()
     }
-    fn show_hover(&self, view_id: xi_core_lib::ViewId, request_id: usize, result: String) {
+    fn show_hover(&self, view_id: ViewId, request_id: usize, result: String) {
         todo!()
     }
     fn schedule_idle(&self, token: usize) {
