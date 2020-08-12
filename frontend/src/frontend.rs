@@ -1,4 +1,5 @@
-use xi_core_lib::client::Frontend;
+use xi_core_lib::{styles::Style, client::Frontend, find::FindStatus, view::Replace};
+
 
 pub struct PathfinderFrontend{
 }
@@ -44,13 +45,13 @@ impl Frontend for PathfinderFrontend{
     fn update_cmds(&self, view_id: xi_core_lib::ViewId, plugin: &str, cmds: &[xi_core_lib::plugin_manifest::Command]) {
         todo!()
     }
-    fn def_style(&self, style: &Value)  {
+    fn def_style(&self, style: &Style)  {
         todo!()
     }
-    fn find_status(&self, view_id: xi_core_lib::ViewId, queries: &Value) {
+    fn find_status(&self, view_id: xi_core_lib::ViewId, queries: &Vec<FindStatus>) {
         todo!()
     }
-    fn replace_status(&self, view_id: xi_core_lib::ViewId, replace: &Value) {
+    fn replace_status(&self, view_id: xi_core_lib::ViewId, replace: &Replace) {
         todo!()
     }
     fn measure_width(&self, reqs: &[xi_core_lib::width_cache::WidthReq]) -> Result<xi_core_lib::width_cache::WidthResponse, xi_rpc::Error> {
