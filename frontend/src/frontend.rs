@@ -62,7 +62,8 @@ impl Frontend for PathfinderFrontend{
     fn replace_status(&self, view_id: ViewId, replace: &Replace) {
         todo!()
     }
-    fn measure_width(&self, reqs: &[xi_core_lib::width_cache::WidthReq]) -> Result<xi_core_lib::width_cache::WidthResponse, xi_rpc::Error> {
+
+    fn measure_width(&self, reqs: &[WidthReq]) -> WidthResponse {
         todo!()
     }
     fn add_status_item(

@@ -48,7 +48,7 @@ pub trait Frontend: Send + 'static  {
     fn find_status(&self, view_id: ViewId, queries: &Vec<FindStatus>);
     fn replace_status(&self, view_id: ViewId, replace: &Replace);
     /// Ask front-end to measure widths of strings.
-    fn measure_width(&self, reqs: &[WidthReq]) -> Result<WidthResponse, xi_rpc::Error>;
+    fn measure_width(&self, reqs: &[WidthReq]) -> WidthResponse;
     //fn alert<S: AsRef<str>>(&self, msg: S);
     fn add_status_item(
         &self,
@@ -249,7 +249,7 @@ impl Client {
                 let resp = r.send_rpc_request("measure_width", &req_json)?;
                 Ok(serde_json::from_value(resp).expect("failed to deserialize width response"))
             },
-            ClientType::Direct(fe)=> fe.measure_width(reqs),
+            ClientType::Direct(fe)=> Ok(fe.measure_width(reqs)),
         }
     }
 
