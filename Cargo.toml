@@ -14,39 +14,39 @@ sdl2-sys = "0.33"
 font-kit = "0.6"
 
 [patch.crates-io]
-pathfinder_geometry = { path = "./src/pathfinder/geometry" }
-pathfinder_simd = { path = "./src/pathfinder/simd" }
+pathfinder_geometry = { path = "./frontend/renderer/pathfinder/geometry" }
+pathfinder_simd = { path = "./frontend/renderer/pathfinder/simd" }
 
 [dependencies.pathfinder_canvas]
 features = ["pf-text"]
-path = "./src/pathfinder/canvas"
+path = "./frontend/renderer/pathfinder/canvas"
 
 [dependencies.pathfinder_color]
-path = "./src/pathfinder/color"
+path = "./frontend/renderer/pathfinder/color"
 
 [dependencies.pathfinder_content]
-path = "./src/pathfinder/content"
+path = "./frontend/renderer/pathfinder/content"
 
 [dependencies.pathfinder_geometry]
-path = "./src/pathfinder/geometry"
+path = "./frontend/renderer/pathfinder/geometry"
 
 [dependencies.pathfinder_gl]
-path = "./src/pathfinder/gl"
+path = "./frontend/renderer/pathfinder/gl"
 
 [dependencies.pathfinder_gpu]
-path = "./src/pathfinder/gpu"
+path = "./frontend/renderer/pathfinder/gpu"
 
 [dependencies.pathfinder_metal]
-path = "./src/pathfinder/metal"
+path = "./frontend/renderer/pathfinder/metal"
 
 [dependencies.pathfinder_renderer]
-path = "./src/pathfinder/renderer"
+path = "./frontend/renderer/pathfinder/renderer"
 
 [dependencies.pathfinder_resources]
-path = "./src/pathfinder/resources"
+path = "./frontend/renderer/pathfinder/resources"
 
 [dependencies.pathfinder_text]
-path = "./src/pathfinder/text"
+path = "./frontend/renderer/pathfinder/text"
 
 [dependencies.skribo]
 version = "0.1"
@@ -61,4 +61,4 @@ default-features = false
 features = []
 
 [dependencies.frontend]
-path = "frontend"
+path = "./frontend"

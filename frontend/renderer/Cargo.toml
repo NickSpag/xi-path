@@ -1,0 +1,53 @@
+[package]
+name = "xi-path-renderer"
+version = "0.1.0"
+authors = ["Nick Spagnola <nicholas.a.spagnola@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+foreign-types = "0.3"
+gl = "0.14"
+metal = "0.18"
+objc = "0.2"
+sdl2 = "0.33"
+sdl2-sys = "0.33"
+font-kit = "0.6"
+
+[patch.crates-io]
+pathfinder_geometry = { path = "pathfinder/geometry" }
+pathfinder_simd = { path = "pathfinder/simd" }
+
+[dependencies.pathfinder_canvas]
+features = ["pf-text"]
+path = "pathfinder/canvas"
+
+[dependencies.pathfinder_color]
+path = "pathfinder/color"
+
+[dependencies.pathfinder_content]
+path = "pathfinder/content"
+
+[dependencies.pathfinder_geometry]
+path = "pathfinder/geometry"
+
+[dependencies.pathfinder_gl]
+path = "pathfinder/gl"
+
+[dependencies.pathfinder_gpu]
+path = "pathfinder/gpu"
+
+[dependencies.pathfinder_metal]
+path = "pathfinder/metal"
+
+[dependencies.pathfinder_renderer]
+path = "pathfinder/renderer"
+
+[dependencies.pathfinder_resources]
+path = "pathfinder/resources"
+
+[dependencies.pathfinder_text]
+path = "pathfinder/text"
+
+[dependencies.skribo]
+version = "0.1"
+optional = true

@@ -1,3 +1,4 @@
+use xi_path_renderer::Renders;
 use xi_core_lib:: {
     ViewId, ConfigTable,LanguageId,
     styles:: { Style, ThemeSettings }, 
@@ -9,18 +10,22 @@ use xi_core_lib:: {
     width_cache:: { WidthReq, WidthResponse }
 };
 
-pub struct PathfinderFrontend{
+pub struct XiPathFrontend{
+    renderer : Box<dyn Renders>
 }
 
-impl PathfinderFrontend {
-    fn new() -> Self {
-        PathfinderFrontend { }
+impl XiPathFrontend {
+    pub fn new(new_renderer: Box<dyn Renders>) -> Self {
+        XiPathFrontend { 
+            renderer: new_renderer,
+        }
     }
 }
 
-impl Frontend for PathfinderFrontend{
+impl Frontend for XiPathFrontend {
 
     fn update_view(&self, view_id: ViewId, update: &Update) {
+        //can call renderer.do_stuff() here
         todo!()
     }
     fn scroll_to(&self, view_id: ViewId, line: usize, col: usize) {
@@ -66,6 +71,7 @@ impl Frontend for PathfinderFrontend{
     fn measure_width(&self, reqs: &[WidthReq]) -> WidthResponse {
         todo!()
     }
+
     fn add_status_item(
         &self,
         view_id: ViewId,

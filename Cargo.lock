@@ -535,6 +535,7 @@ name = "frontend"
 version = "0.1.0"
 dependencies = [
  "xi-core-lib",
+ "xi-path-renderer",
 ]
 
 [[package]]
@@ -1628,6 +1629,29 @@ dependencies = [
  "skribo",
  "xi-core-lib",
  "xi-rope",
+]
+
+[[package]]
+name = "xi-path-renderer"
+version = "0.1.0"
+dependencies = [
+ "font-kit",
+ "foreign-types",
+ "gl",
+ "metal",
+ "objc",
+ "pathfinder_canvas",
+ "pathfinder_color",
+ "pathfinder_content",
+ "pathfinder_geometry",
+ "pathfinder_gl",
+ "pathfinder_gpu",
+ "pathfinder_metal",
+ "pathfinder_renderer",
+ "pathfinder_resources",
+ "pathfinder_text",
+ "sdl2",
+ "sdl2-sys",
 ]
 
 [[package]]
