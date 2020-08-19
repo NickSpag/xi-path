@@ -23,14 +23,14 @@ use xi_trace::trace_block;
 use crate::edit_types::{BufferEvent, EventDomain};
 
 /// A container that manages and holds all recordings for the current editing session
-pub(crate) struct Recorder {
+pub struct Recorder {
     active_recording: Option<String>,
     recording_buffer: Vec<EventDomain>,
     recordings: HashMap<String, Recording>,
 }
 
 impl Recorder {
-    pub(crate) fn new() -> Recorder {
+    pub fn new() -> Recorder {
         Recorder {
             active_recording: None,
             recording_buffer: Vec::new(),
