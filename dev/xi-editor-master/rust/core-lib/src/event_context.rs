@@ -63,7 +63,6 @@ const RENDER_DELAY: Duration = Duration::from_millis(2);
 /// This is created dynamically for each event that arrives to the core,
 /// such as a user-initiated edit or style updates from a plugin.
 pub struct EventContext<'a> {
-    pub(crate) weak_core: &'a WeakXiCore,
     pub view_id: ViewId,
     pub buffer_id: BufferId,
     pub editor: &'a RefCell<Editor>,
@@ -78,6 +77,7 @@ pub struct EventContext<'a> {
     pub style_map: &'a RefCell<ThemeStyleMap>,
     pub width_cache: &'a RefCell<WidthCache>,
     pub kill_ring: &'a RefCell<Rope>,
+    //pub(crate) weak_core: &'a WeakXiCore,
 }
 
 impl<'a> EventContext<'a> {
@@ -338,15 +338,16 @@ impl<'a> EventContext<'a> {
         // sending plugins, to ensure that GC runs.
         ed.increment_revs_in_flight();
 
-        self.plugins.iter().for_each(|plugin| {
-            ed.increment_revs_in_flight();
-            let weak_core = self.weak_core.clone();
-            let id = plugin.id;
-            let view_id = self.view_id;
-            plugin.update(&update, move |resp| {
-                weak_core.handle_plugin_update(id, view_id, resp);
-            });
-        });
+        //nick-comment this out so we can remove the weakcore ref in the eventcontext
+        // self.plugins.iter().for_each(|plugin| {
+        //     ed.increment_revs_in_flight();
+        //     let weak_core = self.weak_core.clone();
+        //     let id = plugin.id;
+        //     let view_id = self.view_id;
+        //     plugin.update(&update, move |resp| {
+        //         weak_core.handle_plugin_update(id, view_id, resp);
+        //     });
+        // });
         ed.dec_revs_in_flight();
         ed.update_edit_type();
     }
@@ -795,7 +796,7 @@ mod tests {
                 kill_ring: &self.kill_ring,
                 style_map: &self.style_map,
                 width_cache: &self.width_cache,
-                weak_core: &self.core_ref,
+                //weak_core: &self.core_ref,
             }
         }
     }
