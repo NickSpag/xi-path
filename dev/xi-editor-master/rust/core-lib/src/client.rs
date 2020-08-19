@@ -49,6 +49,7 @@ pub trait Frontend: Send + 'static  {
     fn replace_status(&self, view_id: ViewId, replace: &Replace);
     /// Ask front-end to measure widths of strings.
     fn measure_width(&self, reqs: &[WidthReq]) -> WidthResponse;
+    //todo address this generic in a trait
     //fn alert<S: AsRef<str>>(&self, msg: S);
     fn add_status_item(
         &self,
@@ -82,6 +83,10 @@ pub struct Client(ClientType);
 impl Client {
     pub fn new(peer: RpcPeer) -> Self {
         Client(ClientType::Rpc(peer))
+    }
+
+    pub fn new_direct(direct: FrontendClient) -> Self {
+        Client(ClientType::Direct(direct))
     }
 
     pub fn update_view(&self, view_id: ViewId, update: &Update) {
