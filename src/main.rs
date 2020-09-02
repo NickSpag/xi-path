@@ -59,8 +59,10 @@ fn main() {
     let canvas = Canvas::new(window_size.to_f32());
     let mut canvas = canvas.get_context_2d(CanvasFontContext::from_system_source());
 
+    let front_end = XiPathFrontend::new_with_pathfinder_renderer();
+
     // arrange xi-editor backend
-    let mut backend_session = Session::new();
+    let mut backend_session = Session::new(Box::new(front_end));
 
     // create a new view
     let view_id = create_view(&mut backend_session);

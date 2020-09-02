@@ -1,4 +1,8 @@
-use xi_path_renderer::Renders;
+use xi_path_renderer:: {
+    pathfinder_renderer::PathfinderRenderer, 
+    Renders
+};
+
 use xi_core_lib:: {
     ViewId, ConfigTable,LanguageId,
     styles:: { Style, ThemeSettings }, 
@@ -15,6 +19,12 @@ pub struct XiPathFrontend{
 }
 
 impl XiPathFrontend {
+    pub fn new_with_pathfinder_renderer() -> Self {
+        XiPathFrontend {
+            renderer: Box::new(PathfinderRenderer::new()),
+        }
+    }
+
     pub fn new(new_renderer: Box<dyn Renders>) -> Self {
         XiPathFrontend { 
             renderer: new_renderer,
