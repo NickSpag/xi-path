@@ -21,6 +21,17 @@ use sdl2_sys::SDL_RenderGetMetalLayer;
 mod session;
 use session::Session;
 use xi_core_lib::ViewId;
+use frontend::frontend::XiPathFrontend;
+
+// - main
+//   - arranges keyboard/input receiving
+//   - arranges frontend/backend
+//   - manages sending keys/input received to backend
+// - frontend
+//   - renderer
+//   - messaging interface for back-end to use
+// - backend. basically xi-core
+//   - needs reference to frontend's messaging interface (done through client modifications)
 
 fn main() {
     // Set up SDL2.
