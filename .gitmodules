@@ -1,3 +1,6 @@
 [submodule "Pathfinder-Servo"]
 	path = frontend/renderer/pathfinder
 	url = https://github.com/servo/pathfinder.git
+[submodule "backend/xi"]
+	path = backend/xi
+	url = https://github.com/xi-editor/xi-editor.git
