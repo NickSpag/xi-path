@@ -26,29 +26,20 @@ use xi_rope::Rope;
 
 
 pub struct Session {
-    editors: BTreeMap<BufferId, RefCell<Editor>>,
-    views: BTreeMap<ViewId, RefCell<View>>,
-    id_counter: Counter,
-    file_manager: FileManager,
+    frontend: XiPathFrontend,
+    backend: XiCore,
 }
 
 impl Session {
-
     pub fn new() -> Self {
+        let config_dir = PathBuf::from("/Users/nickspagnola/Development/Projects/xi-path/dev/config");
+        let extra_dir = PathBuf::from(todo!());
+
+        let frontend = XiPathFrontend::new_with_pathfinder_renderer(); 
         Session {
-            views: BTreeMap::new(),
-            editors: BTreeMap::new(),
-            id_counter: Counter::default(),
-            file_manager: FileManager::new(),
+            frontend,
+            backend: XiCore::new_direct(frontend, Some(config_dir), Some(extras_dir))
         }
-    }
-
-    fn next_view_id(&self) -> ViewId {
-        ViewId(self.id_counter.next())
-    }
-
-    fn next_buffer_id(&self) -> BufferId {
-        BufferId(self.id_counter.next())
     }
 }
 
