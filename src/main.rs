@@ -194,13 +194,3 @@ fn print_text_metrics(canvas: &mut CanvasRenderingContext2D, text: &str) {
 fn insert(session: &mut Session, view_id: &ViewId) {
 
 }
-
-//todo optional path
-fn create_view(session: &mut Session) -> ViewId {
-    return match session.add_new_view(None) {
-        Ok(vid) => vid,
-        Err(e) => {
-            panic!("{}", e);
-        }
-    };
-}

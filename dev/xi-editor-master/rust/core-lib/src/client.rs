@@ -49,7 +49,7 @@ pub trait Frontend: Send + 'static  {
     fn replace_status(&self, view_id: ViewId, replace: &Replace);
     /// Ask front-end to measure widths of strings.
     fn measure_width(&self, reqs: &[WidthReq]) -> WidthResponse;
-    //todo address this generic in a trait
+    // todo: we have to comment out alert, as its a generic in a trait and i dont understand enough about 'em to workaround that limitaiton
     //fn alert<S: AsRef<str>>(&self, msg: S);
     fn add_status_item(
         &self,
@@ -76,8 +76,8 @@ pub enum ClientType
 
 /// An interface to the frontend.
 ///   originally- Client(RpcPeer). So I just created an enum of the type of client we want, one member with rpc, one with Frontend trait, 
-///   and calls to Client match the enum and continue on with Json if its the old RpcPeer, or direct calls to the Frontend trait if not
-///   probably a rust central way to do this. just pushing forward for sake of educational momentum
+///   and calls to Client match the enum and continue on with Json if its the old RpcPeer, or direct calls to the Frontend trait if not.
+///   Might not be an idiomatic rust pattern. just pushing forward for sake of educational momentum
 pub struct Client(ClientType);
 
 impl Client {
@@ -130,8 +130,7 @@ impl Client {
 
     pub fn available_themes(&self, theme_names: Vec<String>) {
         match &self.0 {
-            ClientType::Rpc(r) => 
-                r.send_rpc_notification("available_themes", &json!({ "themes": theme_names })),
+            ClientType::Rpc(r) => r.send_rpc_notification("available_themes", &json!({ "themes": theme_names })),
             ClientType::Direct(fe) => fe.available_themes(theme_names),
         };
     }
