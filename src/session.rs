@@ -45,22 +45,12 @@ impl Session {
 
 // view-related
 impl Session {
-    pub fn add_new_view(&mut self, path: Option<PathBuf>) -> Result<ViewId, FileError> {
-        let view_id = self.next_view_id();
-        let buffer_id = self.next_buffer_id();
 
-        let rope = match path.as_ref() {
-            Some(p) => self.file_manager.open(p, buffer_id)?,
-            None => Rope::from(""),
-        };
-
-        let editor = RefCell::new(Editor::with_text(rope));
-        let view = RefCell::new(View::new(view_id, buffer_id));
-
-        self.editors.insert(buffer_id, editor);
-        self.views.insert(view_id, view);
-
-        Ok(view_id)
+    pub (crate) fn add_new_view(&mut self, path: Option<PathBuf>) -> ViewId {
+        match self.backend.new_view(path) {
+            Ok(v) => v,
+            Err(e) => panic!("new_view errored out"),
+        }
     }
 
     pub fn insert(&mut self, view_id: &ViewId, keycode: Keycode) {
@@ -303,37 +293,7 @@ impl Session {
             _ => return,
         };
 
+        //todo tell backend with viewId there was an insert
         println!("{}", insertable_key);
-    }
-
-    pub fn make_context(&self, view_id: ViewId) -> Option<EventContext> {
-        self.views.get(&view_id).map(|view| {
-            let buffer_id = view.borrow().get_buffer_id();
-
-            let editor = &self.editors[&buffer_id];
-            let info = self.file_manager.get_info(buffer_id);
-
-            //let plugins =  self.running_plugins.iter().collect::<Vec<_>>();
-            let config = self.config_manager.get_buffer_config(buffer_id);
-            let language = self.config_manager.get_buffer_language(buffer_id);
-
-            EventContext {
-                view_id,
-                buffer_id,
-                view,
-                editor,
-                config: &config.items,
-                recorder: &self.recorder,
-                language,
-                info,
-                siblings: Vec::new(),
-                plugins: Vec::new(),
-                client: &self.peer,
-                style_map: &self.style_map,
-                width_cache: &self.width_cache,
-                kill_ring: &self.kill_ring,
-                weak_core: self.self_ref.as_ref().unwrap(),
-            }
-        })
     }
 }
