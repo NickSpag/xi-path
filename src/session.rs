@@ -1,29 +1,9 @@
-use std::cell::{Cell, RefCell};
-use std::collections::{BTreeMap, HashSet};
-use std::fmt;
-use std::fs::File;
-use std::io;
-use std::mem;
-use std::path::{Path, PathBuf};
+use std::{path::PathBuf, sync::Mutex, sync::Arc, cell::RefCell, sync::Weak};
+use sdl2::{keyboard::Keycode, VideoSubsystem};
 
-use sdl2::keyboard::Keycode;
+use xi_core_lib::{ ViewId, XiCore , client::Frontend};
 
-use xi_core_lib::{ 
-    ViewId, 
-    BufferId,
-    view::View, 
-    editor::Editor,
-    tabs::Counter,
-    file:: {FileManager, FileError },
-    event_context::EventContext, 
-    config::ConfigManager, 
-    styles::ThemeStyleMap, 
-    width_cache::WidthCache 
-};
-
-use xi_rope::Rope;
-
-
+use frontend::frontend::{XiPathFrontend};
 
 pub struct Session {
     frontend: XiPathFrontend,
