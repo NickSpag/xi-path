@@ -1,0 +1,13 @@
+[package]
+name = "xi-path-frontend"
+version = "0.1.0"
+authors = ["Nick Spagnola <nicholas.a.spagnola@gmail.com>"]
+edition = "2018"
+
+[dependencies.xi-rope]
+path = "./xi/rust/rope"
+
+[dependencies.xi-core-lib]
+path = "./xi/rust/core-lib"
+default-features = false
+features = []

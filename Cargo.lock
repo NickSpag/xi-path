@@ -534,6 +534,8 @@ dependencies = [
 name = "frontend"
 version = "0.1.0"
 dependencies = [
+ "sdl2",
+ "sdl2-sys",
  "xi-core-lib",
  "xi-path-renderer",
 ]
@@ -1692,7 +1694,7 @@ dependencies = [
 
 [[package]]
 name = "xi-unicode"
-version = "0.2.1"
+version = "0.3.0"
 
 [[package]]
 name = "xml-rs"
