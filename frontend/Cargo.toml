@@ -8,11 +8,13 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+sdl2 = "0.33"
+sdl2-sys = "0.33"
 
 [dependencies.xi-path-renderer]
 path = "./renderer"
 
 [dependencies.xi-core-lib]
-path = ".././dev/xi-editor-master/rust/core-lib"
+path = ".././backend/xi/rust/core-lib"
 default-features = false
 features = []
