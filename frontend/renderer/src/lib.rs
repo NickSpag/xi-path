@@ -1,6 +1,6 @@
 pub mod pathfinder_renderer;
 
-pub trait Renders : Send + 'static 
+pub trait Renders : 
 {
-
+    fn render(&mut self);
 }
