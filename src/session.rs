@@ -1,7 +1,7 @@
-use std::{path::PathBuf, sync::Mutex, sync::Arc, cell::RefCell, sync::Weak};
-use sdl2::{keyboard::Keycode, VideoSubsystem};
+use std::{path::PathBuf};
+use sdl2::{keyboard::Keycode, Sdl};
 
-use xi_core_lib::{ ViewId, XiCore , client::Frontend};
+use xi_core_lib::{ ViewId, XiCore};
 
 use frontend::frontend::{XiPathFrontend};
 
@@ -11,20 +11,25 @@ pub struct Session {
 }
 
 impl Session {
-    pub fn new() -> Self {
+    pub fn new(sdl_context: &Sdl) -> Self {
         let config_dir = PathBuf::from("/Users/nickspagnola/Development/Projects/xi-path/dev/config");
-        let extra_dir = PathBuf::from(todo!());
+        let extra_dir = PathBuf::from("todo");
 
-        let frontend = XiPathFrontend::new_with_pathfinder_renderer(); 
+        let frontend = XiPathFrontend::new_with_pathfinder_renderer(&sdl_context); 
+        let clone = frontend.clone();
         Session {
             frontend,
-            backend: XiCore::new_direct(frontend, Some(config_dir), Some(extras_dir))
+            backend: XiCore::new_direct(Box::new(clone), Some(config_dir), Some(extra_dir))
         }
     }
 }
 
 // view-related
 impl Session {
+
+    pub (crate) fn first_render(&self) {
+        self.frontend.first_render();
+    }
 
     pub (crate) fn add_new_view(&mut self, path: Option<PathBuf>) -> ViewId {
         match self.backend.new_view(path) {
@@ -33,7 +38,7 @@ impl Session {
         }
     }
 
-    pub fn insert(&mut self, view_id: &ViewId, keycode: Keycode) {
+    pub (crate) fn insert(&mut self, view_id: &ViewId, keycode: Keycode) {
         let insertable_key = match keycode {
             Keycode::A => keycode,
             //Keycode::Backspace => {}
