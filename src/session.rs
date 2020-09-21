@@ -1,75 +1,36 @@
-use std::cell::{Cell, RefCell};
-use std::collections::{BTreeMap, HashSet};
-use std::fmt;
-use std::fs::File;
-use std::io;
-use std::mem;
-use std::path::{Path, PathBuf};
+use std::{path::PathBuf, sync::Mutex, sync::Arc, cell::RefCell, sync::Weak};
+use sdl2::{keyboard::Keycode, VideoSubsystem};
 
-use sdl2::keyboard::Keycode;
+use xi_core_lib::{ ViewId, XiCore , client::Frontend};
 
-use xi_core_lib::{ 
-    ViewId, 
-    BufferId,
-    view::View, 
-    editor::Editor,
-    tabs::Counter,
-    file:: {FileManager, FileError },
-    event_context::EventContext, 
-    config::ConfigManager, 
-    styles::ThemeStyleMap, 
-    width_cache::WidthCache 
-};
-
-use xi_rope::Rope;
-
-
+use frontend::frontend::{XiPathFrontend};
 
 pub struct Session {
-    editors: BTreeMap<BufferId, RefCell<Editor>>,
-    views: BTreeMap<ViewId, RefCell<View>>,
-    id_counter: Counter,
-    file_manager: FileManager,
+    frontend: XiPathFrontend,
+    backend: XiCore,
 }
 
 impl Session {
-
     pub fn new() -> Self {
+        let config_dir = PathBuf::from("/Users/nickspagnola/Development/Projects/xi-path/dev/config");
+        let extra_dir = PathBuf::from(todo!());
+
+        let frontend = XiPathFrontend::new_with_pathfinder_renderer(); 
         Session {
-            views: BTreeMap::new(),
-            editors: BTreeMap::new(),
-            id_counter: Counter::default(),
-            file_manager: FileManager::new(),
+            frontend,
+            backend: XiCore::new_direct(frontend, Some(config_dir), Some(extras_dir))
         }
-    }
-
-    fn next_view_id(&self) -> ViewId {
-        ViewId(self.id_counter.next())
-    }
-
-    fn next_buffer_id(&self) -> BufferId {
-        BufferId(self.id_counter.next())
     }
 }
 
 // view-related
 impl Session {
-    pub fn add_new_view(&mut self, path: Option<PathBuf>) -> Result<ViewId, FileError> {
-        let view_id = self.next_view_id();
-        let buffer_id = self.next_buffer_id();
 
-        let rope = match path.as_ref() {
-            Some(p) => self.file_manager.open(p, buffer_id)?,
-            None => Rope::from(""),
-        };
-
-        let editor = RefCell::new(Editor::with_text(rope));
-        let view = RefCell::new(View::new(view_id, buffer_id));
-
-        self.editors.insert(buffer_id, editor);
-        self.views.insert(view_id, view);
-
-        Ok(view_id)
+    pub (crate) fn add_new_view(&mut self, path: Option<PathBuf>) -> ViewId {
+        match self.backend.new_view(path) {
+            Ok(v) => v,
+            Err(e) => panic!("new_view errored out"),
+        }
     }
 
     pub fn insert(&mut self, view_id: &ViewId, keycode: Keycode) {
@@ -312,37 +273,7 @@ impl Session {
             _ => return,
         };
 
+        //todo tell backend with viewId there was an insert
         println!("{}", insertable_key);
-    }
-
-    pub fn make_context(&self, view_id: ViewId) -> Option<EventContext> {
-        self.views.get(&view_id).map(|view| {
-            let buffer_id = view.borrow().get_buffer_id();
-
-            let editor = &self.editors[&buffer_id];
-            let info = self.file_manager.get_info(buffer_id);
-
-            //let plugins =  self.running_plugins.iter().collect::<Vec<_>>();
-            let config = self.config_manager.get_buffer_config(buffer_id);
-            let language = self.config_manager.get_buffer_language(buffer_id);
-
-            EventContext {
-                view_id,
-                buffer_id,
-                view,
-                editor,
-                config: &config.items,
-                recorder: &self.recorder,
-                language,
-                info,
-                siblings: Vec::new(),
-                plugins: Vec::new(),
-                client: &self.peer,
-                style_map: &self.style_map,
-                width_cache: &self.width_cache,
-                kill_ring: &self.kill_ring,
-                weak_core: self.self_ref.as_ref().unwrap(),
-            }
-        })
     }
 }

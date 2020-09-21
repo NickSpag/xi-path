@@ -53,10 +53,10 @@ version = "0.1"
 optional = true
 
 [dependencies.xi-rope]
-path = "./dev/xi-editor-master/rust/rope"
+path = "./backend/xi/rust/rope"
 
 [dependencies.xi-core-lib]
-path = "./dev/xi-editor-master/rust/core-lib"
+path = "./backend/xi/rust/core-lib"
 default-features = false
 features = []
 
